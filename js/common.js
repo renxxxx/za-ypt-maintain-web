@@ -29,17 +29,6 @@ common.newTab = function (title, url) {
 
 
 
-common.subOmitRight = function (value, length) {
-    if (!value)
-        return ''
-    var s = ''
-    if (value.length > length)
-        s = '...'
-    return value.substring(0, length) + s
-}
-
-
-
 common.prettyFileSize = function (size) {
     if (!size)
         return "";

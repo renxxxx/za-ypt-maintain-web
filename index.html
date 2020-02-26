@@ -9,18 +9,19 @@
 
     <script src="https://lib.sinaapp.com/js/jquery/1.9.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://lib.sinaapp.com/js/bootstrap/3.3.7/css/bootstrap.min.css" />
-    <script src="./other/layui-v2.5.5/layui.all.js"></script>
-    <link rel="stylesheet" href="./other/layui-v2.5.5/css/layui.css" />
+    <script src="./layui-v2.5.5/layui.all.js"></script>
+    <link rel="stylesheet" href="./layui-v2.5.5/css/layui.css" />
 
-    <script src="./other/zTree_v3/js/jquery.ztree.all.js"></script>
-    <link rel="stylesheet" href="./other/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <script src="./zTree_v3/js/jquery.ztree.all.js"></script>
+    <link rel="stylesheet" href="./zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
 
-    <link rel="stylesheet" type="text/css" href="./other/jquery-easyui-1.8.7/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="./other/jquery-easyui-1.8.7/themes/icon.css">
-    <link rel="stylesheet" type="text/css" href="./other/jquery-easyui-1.8.7/demo/demo.css">
-    <script type="text/javascript" src="./other/jquery-easyui-1.8.7/jquery.easyui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./jquery-easyui-1.8.7/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="./jquery-easyui-1.8.7/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="./jquery-easyui-1.8.7/demo/demo.css">
+    <script type="text/javascript" src="./jquery-easyui-1.8.7/jquery.easyui.min.js"></script>
 
-    <script src="./other/common.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/jquery.oneall.js"></script>
     <style>
         .ztree li a.curSelectedNode {
             height: 18px !important;
@@ -36,7 +37,18 @@
     </style>
 
     <script>
-        var login;
+        var login,param;
+
+      
+        $(document).ready(function () {
+            debugger
+            $.get('/oss/alive/config.json',function(res){
+                debugger
+                param = res;
+                $('#param-name').text(param.name)
+                $('title').text(param.name)
+            })
+        });
 
         $(document).keydown(function (event) {
             if (event.keyCode == 13) {
@@ -60,15 +72,20 @@
 
         var zNodes = [],zTreeObj;
         zNodes.push({ name: '概览', _url: './overview.html' })
-        zNodes.push({ name: '医院', _url: './hospital-manage.html' })
-        zNodes.push({ name: '文章类型', _url: './article-type-manage.html' })
-        zNodes.push({ name: '广告', _url: './ad-manage.html' })
+        zNodes.push({ name: '医院管理', _url: './manage-hospital.html' })
+        zNodes.push({ name: '用户管理', _url: './manage-user.html' })
+        zNodes.push({ name: '医生管理', _url: './manage-doctor.html' })
+        zNodes.push({ name: '医护管理', _url: './manage-nurse.html' })
+        zNodes.push({ name: '科室管理', _url: './manage-office.html' })
+      // zNodes.push({ name: '广告', _url: './ad-manage.html' })
         zNodes.push({
-            name: '页面', children: [
-                { name: '用户协议', _url: '/maintain/set-page-user-protocol.html' }
+            name: '文件编辑', children: [
+                { name: '用户协议', _url: './edit-file-user-protocol.html' }
             ]
         })
-        zNodes.push({ name: '参数', _url: './param-manage.html' })
+        zNodes.push({ name: '配置管理', _url: './manage-config.html' })
+
+       // zNodes.push({ name: '参数', _url: './param-manage.html' })
         zNodes.push({ name: '退出登录', _url: '' })
         var setting = {
                 view: {
@@ -104,7 +121,7 @@
     <div class="easyui-layout" style="width:100%;position:absolute;top:0;bottom:0;">
         <div data-options="region:'north'" style="height:80px">
             <div style="margin-top:18px;">
-                <span style="padding-left:10px;font-size: 26px;font-weight: 700;">医品通</span>
+                <span id="param-name" style="padding-left:10px;font-size: 26px;font-weight: 700;"></span>
                 <span style="padding-left:10px;font-size: 22px;">运维</span>
             </div>
         </div>
@@ -133,12 +150,16 @@
             <div id="tab-tools">
                 <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-dustbin'"
                     onclick="
-                            if(confirm('确定关闭所有标签页吗？'))
-                                $($('#tabPad').tabs('tabs')).each(function(index,ele){ $('#tabPad').tabs('close',),index})   "></a>
+                    layer.confirm('要关闭所有标签吗?', function () {
+                    $($('#tabPad').tabs('tabs')).each(function(index,ele){ $('#tabPad').tabs('close',),index})
+                    layer.close(layer.index)
+                });  "></a>
             </div>
         </div>
     </div>
 </body>
+<script>
 
+</script>
 
 </html>

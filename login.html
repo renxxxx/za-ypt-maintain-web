@@ -2,14 +2,14 @@
 <html lang="en">
 
 <head>
-    <title>医品通-运维-登录</title>
+    <title>医品通 - 运维</title>
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script src="https://lib.sinaapp.com/js/jquery/1.9.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://lib.sinaapp.com/js/bootstrap/3.3.7/css/bootstrap.min.css" />
-    <script src="./other/layui-v2.5.5/layui.all.js"></script>
-    <link rel="stylesheet" href="./other/layui-v2.5.5/css/layui.css" />
-    
+    <script src="./layui-v2.5.5/layui.all.js"></script>
+    <link rel="stylesheet" href="./layui-v2.5.5/css/layui.css" />
+
 
     <style>
         .logo img {
@@ -110,10 +110,16 @@
     </style>
 
     <script>
-        var account, password;
+        var account, password, param;
 
         $(document).ready(function () {
-
+            debugger
+            $.get('/oss/alive/config.json', function (res) {
+                debugger
+                param = res;
+                $('#param-name').text(param.name)
+                $('title').text(param.name + ' - 运维')
+            })
         });
 
 
@@ -125,7 +131,7 @@
 
         $.post('/maintain/login-refresh', function (data) {
             if (data.code == 0) {
-                layer.msg('已登录');
+                layer.msg('已登录, 跳转中...');
                 localStorage.setItem('maintainLogin', data.data)
                 location.href = './index.html';
             }
@@ -141,11 +147,11 @@
     <div style="margin-bottom:5%;"></div>
     <div class="logo smargin"
         style="height: 33px;line-height: 33px;text-align: center;margin-top: 1.67rem;margin-bottom: 0.91rem;">
-        <img src="./favicon.ico" alt="" />
-        <h2>医品通-运维</h2>
+        <h2 id="param-name"></h2>
     </div>
+    <h3 style="margin-top:10px;text-align: center;">运维</h3>
 
-    <div id="loginPad">
+    <div id="loginPad" style="margin-top:10px;">
         <div class="number phone">
             <input type="text" oninput="account=this.value" />
             <div>
@@ -169,22 +175,43 @@
         </div>
         <div class="loginbtn" style="margin-top:20px;">
             <button id="enterClick" onclick=" 
-            $.post('/maintain/login',{ account: account, password: password },function (data) {
+
+            $.ajax({
+                url:'/maintain/login',
+                type:'post',
+                data:{ account: account, password: password },
+                beforeSend:function(){
+                                            this.layerIndex=layer.load(2)
+                                        },
+                 success:function(data){
                     if (data.codeMsg)
                         layer.alert(data.codeMsg);
                     if (data.code == 0) {
-                        layer.msg('登录成功');
-                        $.post('/maintain/login-refresh',function(data){
+                        $.ajax(
+                            {url:'/maintain/login-refresh',
+                            type:'post',
+                            beforeSend:function(){
+                                            this.layerIndex=layer.load(2)
+                                        },
+                            success:function(data){
                             if(data.codeMsg)
                                     layer.alert(data.codeMsg);
                                 if (data.code == 0) {
+                                    layer.msg('登录成功');
                                     localStorage.setItem('maintainLogin',data.data)
                                     location.href = './index.html';
                                 }
-                        })
-                    }
+                            },
+                                complete:function(){
+                                    layer.close(this.layerIndex)
+                                }
+                    })
                 }
-              )">登录</button>
+                },
+                    complete:function(){
+                        layer.close(this.layerIndex)
+                    }
+            })">登录</button>
             <!-- <div style="text-align: right;">
                 <a href="/">官网</a>
             </div> -->
@@ -194,5 +221,8 @@
         <!--<div class="registernow rt" style="color: #1890ff;cursor: pointer;">注册账户</div>-->
     </div>
 </body>
+<script>
+
+</script>
 
 </html>
