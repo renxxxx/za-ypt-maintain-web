@@ -37,16 +37,16 @@
     </style>
 
     <script>
-        var login,param;
+        var login,serverConfig;
 
       
         $(document).ready(function () {
             debugger
             $.get('/oss/alive/config.json',function(res){
                 debugger
-                param = res;
-                $('#param-name').text(param.name)
-                $('title').text(param.name)
+                serverConfig = res;
+                $('#param-name').text(serverConfig.name)
+                $('title').text(serverConfig.name)
             })
         });
 
