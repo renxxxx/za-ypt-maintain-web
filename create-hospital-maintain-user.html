@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>医品通-运维-创建医生</title>
+    <title>医品通-运维-创建用户</title>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
 
@@ -45,7 +45,11 @@
 <script>
 
     var queryStringObject = common.queryStringObject();
-    var doctor = {},contentKindEditor
+    var hospitalMaintainUser = {},contentKindEditor
+
+    
+  
+
 
     // var a = layer.load(2);
     // setTimeout(function(){
@@ -59,17 +63,26 @@
 
     $(document).ready(function(){
         debugger
+       
+      
+      
         $("#loading").remove();
+
+       
     })
 
 
 function createConfirm(){
     debugger
+    if(hospitalMaintainUser.password != hospitalMaintainUser.passwordConfirm){
+        layer.alert('两次密码不一致')
+        return;
+    }
     layer.confirm('确认创建吗?',function(){
         $.ajax({
                             type: 'post',
-                            url: '/maintain/create-doctor',
-                            data: doctor,
+                            url: '/maintain/create-hospital-maintain-user',
+                            data: hospitalMaintainUser,
                             beforeSend:function(){
                                             this.layerIndex=layer.load(2)
                                         },
@@ -111,9 +124,9 @@ function createConfirm(){
             </thead>
             <tbody>
                 <tr>
-                    <td>医生名称&nbsp;</td>
+                    <td>用户名称&nbsp;</td>
                     <td><input id="name" class="easyui-textbox" style="width:100%" data-options="
-                        value:doctor.name,
+                        value:hospitalMaintainUser.name,
                         iconWidth:20,
                         icons:[{
                             iconCls:'icon-clear',
@@ -123,9 +136,42 @@ function createConfirm(){
                             }
                         }],
                         onChange:function(newValue, oldValue){
-                            doctor.name=newValue
+                            hospitalMaintainUser.name=newValue
                         }" style="width:200px"></td>
                 </tr>
+                <tr>
+                    <td>账号&nbsp;</td>
+                    <td><input id="account" class="easyui-textbox" style="width:100%" data-options="
+                        value:hospitalMaintainUser.account,
+                        iconWidth:20,
+                        icons:[{
+                            iconCls:'icon-clear',
+                            handler: function(e){
+                                debugger
+                                $(e.data.target).textbox('setValue','');
+                            }
+                        }],
+                        onChange:function(newValue, oldValue){
+                            hospitalMaintainUser.account=newValue
+                        }" style="width:200px"></td>
+                </tr>
+                <tr>
+                    <td>手机&nbsp;</td>
+                    <td><input id="phone" class="easyui-textbox" style="width:100%" data-options="
+                        value:hospitalMaintainUser.phone,
+                        iconWidth:20,
+                        icons:[{
+                            iconCls:'icon-clear',
+                            handler: function(e){
+                                debugger
+                                $(e.data.target).textbox('setValue','');
+                            }
+                        }],
+                        onChange:function(newValue, oldValue){
+                            hospitalMaintainUser.phone=newValue
+                        }" style="width:200px"></td>
+                </tr>
+
                 <tr>
                     <td>封面&nbsp;</td>
                     <td>
@@ -153,8 +199,8 @@ function createConfirm(){
                                             if (res.codeMsg)
                                                 layer.alert(res.codeMsg)
                                             if (res.code == 0) {
-                                                doctor.cover=res.data.url 
-                                                $(target).prev().attr('src',doctor.cover).show()
+                                                hospitalMaintainUser.cover=res.data.url 
+                                                $(target).prev().attr('src',hospitalMaintainUser.cover).show()
                                              target.value=null
                                             }
                                         },
@@ -166,94 +212,49 @@ function createConfirm(){
                             " />
                             <a title="删除" href="JavaScript:void(0)" class="easyui-linkbutton" iconCls="icon-clear" plain="true"
                                 style="vertical-align: text-bottom;"
-                                onclick="$(this).prev().prev().attr('src',null).hide();doctor.cover='';"></a>
+                                onclick="$(this).prev().prev().attr('src',null).hide();hospitalMaintainUser.cover='';"></a>
 
                             <a title="选择" href="JavaScript:void(0)" class="easyui-linkbutton" iconCls="icon-choose" plain="true"
                                 style="vertical-align: text-bottom;" onclick="$(this).prev().prev().click()"></a>
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <td>视频&nbsp;</td>
-                    <td>
-                        <div id="video">
-                            <video class="value" style="width: 200px;height: 200px;display:none;" controls="controls" ></video>
-                            <input type="file" style="display:none;" onchange="
-                            javascript:
-                            debugger
-                           
-                            var target = this;
-                                if(this.files.length>0){
-                                    var file = this.files[0];
-                                    var fd = new FormData()
-                                    fd.append('file', file);
-                                    $.ajax({
-                                        url: '/upload-static-file?' + $.param({ quality: 0.8 }),
-                                        type: 'POST',
-                                        data: fd,
-                                        cache: false,
-                                        processData: false,
-                                        contentType: false,
-                                        async: true,
-                                        beforeSend:function(){
-                                            this.layerIndex=layer.load(2)
-                                        },
-                                        success: function (res) {
-                                            if (res.codeMsg)
-                                                layer.alert(res.codeMsg)
-                                            if (res.code == 0) {
-                                                doctor.video=res.data.url 
-                                                $(target).prev().attr('src',doctor.video).show()
-                                            }
-                                            target.value=null
-                                            
-                                        },
-                                        complete:function(){
-                                            layer.close(this.layerIndex)
-                                        }
-                                    })
-                                }
-                        " />
-                            <a title="删除" href="JavaScript:void(0)" class="easyui-linkbutton" iconCls="icon-clear" plain="true"
-                                style="vertical-align: text-bottom;"
-                                onclick="$(this).prev().prev().attr('src',null).hide();doctor.video='';"></a>
 
-                            <a title="选择" href="JavaScript:void(0)" class="easyui-linkbutton" iconCls="icon-choose" plain="true"
-                                style="vertical-align: text-bottom;" onclick="debugger;$(this).prev().prev().click()"></a>
-                        </div>
-                    </td>
-                </tr>
                 <tr>
-                    <td>标签&nbsp;</td>
-                    <td><input id="tag" class="easyui-textbox" style="width:100%" data-options="
-                        value:doctor.tag,
-                        prompt:'英文逗号间隔, 如: 标签1,标签2,标签3',
+                    <td>密码&nbsp;</td>
+                    <td><input id="password" class="easyui-passwordbox" style="width:100%" data-options="
+                        value:hospitalMaintainUser.password,
                         iconWidth:20,
                         icons:[{
                             iconCls:'icon-clear',
                             handler: function(e){
                                 debugger
-                                $(e.data.target).textbox('setValue','');
+                                $(e.data.target).passwordbox('setValue','');
                             }
                         }],
                         onChange:function(newValue, oldValue){
-                            doctor.tag=newValue
+                            hospitalMaintainUser.password=newValue
                         }" style="width:200px"></td>
                 </tr>
                 <tr>
-                    <td>简介&nbsp;</td>
-                    <td><input id="intro" class="easyui-textbox" style="width:100%;height:200px;" data-options="
-                            value:doctor.intro,
-                            multiline:true,
-                            onChange:function(newValue, oldValue){
-                                doctor.intro=newValue
-                            }" style="width:200px"></td>
+                    <td>确认密码&nbsp;</td>
+                    <td><input id="passwordConfirm" class="easyui-passwordbox" style="width:100%" data-options="
+                        value:hospitalMaintainUser.passwordConfirm,
+                        iconWidth:20,
+                        icons:[{
+                            iconCls:'icon-clear',
+                            handler: function(e){
+                                debugger
+                                $(e.data.target).passwordbox('setValue','');
+                            }
+                        }],
+                        onChange:function(newValue, oldValue){
+                            hospitalMaintainUser.passwordConfirm=newValue
+                        }" style="width:200px"></td>
                 </tr>
-
-               
                 <tr>
                     <td>医院&nbsp;</td>
-                    <td><input class="easyui-combobox" name="hospitalId" style="width:100%;" data-options="
+                    <td><input id="hospitalId" class="easyui-combobox"  style="width:100%;" data-options="
                         valueField:'hospitalId',
                         textField:'name',
                         panelHeight:'auto',
@@ -281,56 +282,7 @@ function createConfirm(){
                             })
                         },
                         onChange:function(newValue, oldValue){
-                           doctor.hospitalId=newValue
-                           doctor.officeId=null
-                        },
-                        loadFilter: function (data) {
-                            debugger
-                            return data.rows;
-                        },
-                        iconWidth:20,
-                        icons:[{
-                            iconCls:'icon-clear',
-                            handler: function(e){
-                                $(e.data.target).combobox('setValue','');
-                            }
-                        }]
-                        "></td>
-                </tr>
-                <tr>
-                    <td>科室&nbsp;</td>
-                    <td><input class="easyui-combobox" name="officeId" style="width:100%;" data-options="
-                        valueField:'officeId',
-                        textField:'name',
-                        panelHeight:'auto',
-                        mode:'remote',
-                        onShowPanel:function(){
-                            $(this).combobox('reload')
-                        },
-                        loader: function (param, success, error) {
-                            debugger
-                            if(!doctor.hospitalId)
-                                return;
-                            param.kw=param.q;
-                            param.hospitalId=doctor.hospitalId
-                            param.ps = param.rows;
-                            param.pn = param.page;
-                            $.ajax({
-                                url: '/maintain/offices',
-                                type: 'get',
-                                data: param,
-                                success: function (data) {
-                                    if (data.code != 0) {
-                                        return false;
-                                    } else {
-                                        success(data.data);
-                                    }
-                
-                                }
-                            })
-                        },
-                        onChange:function(newValue, oldValue){
-                           doctor.officeId=newValue
+                            hospitalMaintainUser.hospitalId=newValue
                         },
                         loadFilter: function (data) {
                             debugger
@@ -347,12 +299,37 @@ function createConfirm(){
                 </tr>
                
                 <tr>
+                    <td>类型&nbsp;</td>
+                    <td><input id="type" class="easyui-combobox" style="width:100%" data-options="
+                                    value:0,
+                                    editable:false,panelHeight:'auto',
+                                    data:[
+                                    {
+                                         text: '普通',
+                                         value: '0'
+                                     },{
+                                         text: '管理',
+                                         value: '1'
+                                     }],
+                                     iconWidth:20,
+                                     icons:[{
+                                         iconCls:'icon-clear',
+                                         handler: function(e){
+                                             $(e.data.target).combobox('setValue','');
+                                         }
+                                     }],
+                                     onChange:function(newValue, oldValue){
+                                        hospitalMaintainUser.type=newValue
+                                     }" /></td>
+                </tr>
+                
+                <tr>
                     <td>备注&nbsp;</td>
                     <td><input id="remark" class="easyui-textbox" style="width:100%;height:200px;" data-options="
-                            value:doctor.remark,
+                            value:hospitalMaintainUser.remark,
                             multiline:true,
                             onChange:function(newValue, oldValue){
-                                doctor.remark=newValue
+                                hospitalMaintainUser.remark=newValue
                             }" style="width:200px"></td>
                 </tr>
                
@@ -360,7 +337,7 @@ function createConfirm(){
                     <td>排序号&nbsp;</td>
                     <td><input id="orderNo" class="easyui-numberbox" style="width:100%" data-options="
                                     prompt:'9999',
-                                    value:doctor.orderNo,
+                                    value:hospitalMaintainUser.orderNo,
                                     precision:2,
                                     iconWidth:20,
                                     icons:[{
@@ -370,7 +347,7 @@ function createConfirm(){
                                         }
                                     }],
                                     onChange:function(newValue, oldValue){
-                                        doctor.orderNo=newValue
+                                        hospitalMaintainUser.orderNo=newValue
                                     }" style="width:200px"></td>
                 </tr>
                 <tr>
@@ -385,7 +362,7 @@ function createConfirm(){
                                             }
                                         }],
                                         onChange:function(newValue, oldValue){
-                                            doctor.createTime=newValue
+                                            hospitalMaintainUser.createTime=newValue
                                         }"></td>
                 </tr>
                 <tr>
@@ -400,7 +377,7 @@ function createConfirm(){
                                                 }
                                             }],
                                             onChange:function(newValue, oldValue){
-                                                doctor.updateTime=newValue
+                                                hospitalMaintainUser.updateTime=newValue
                                             }"></td>
                 </tr>
 

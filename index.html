@@ -37,16 +37,16 @@
     </style>
 
     <script>
-        var login,serverConfig;
+        var login,projectConfig;
 
       
         $(document).ready(function () {
             debugger
             $.get('/oss/alive/config.json',function(res){
                 debugger
-                serverConfig = res;
-                $('#param-name').text(serverConfig.name)
-                $('title').text(serverConfig.name)
+                projectConfig = res;
+                $('#projectConfig-name').text(projectConfig.name)
+                $('title').text(projectConfig.name)
             })
         });
 
@@ -72,10 +72,15 @@
 
         var zNodes = [],zTreeObj;
         zNodes.push({ name: '概览', _url: './overview.html' })
-        zNodes.push({ name: '医院管理', _url: './manage-hospital.html' })
+        zNodes.push({
+            name: '医院管理', children: [
+                { name: '医院管理', _url: './manage-hospital.html' },
+                { name: '运维用户', _url: './manage-hospital-maintain-user.html' }
+            ]
+        })
         zNodes.push({ name: '用户管理', _url: './manage-user.html' })
         zNodes.push({ name: '医生管理', _url: './manage-doctor.html' })
-        zNodes.push({ name: '医生评价管理', _url: './manage-doctor-comment.html' })
+        zNodes.push({ name: '医生评价', _url: './manage-doctor-comment.html' })
         zNodes.push({ name: '医护管理', _url: './manage-nurse.html' })
         zNodes.push({ name: '科室管理', _url: './manage-office.html' })
       // zNodes.push({ name: '广告', _url: './ad-manage.html' })
@@ -122,13 +127,13 @@
     <div class="easyui-layout" style="width:100%;position:absolute;top:0;bottom:0;">
         <div data-options="region:'north'" style="height:80px">
             <div style="margin-top:18px;">
-                <span id="param-name" style="padding-left:10px;font-size: 26px;font-weight: 700;"></span>
+                <span id="projectConfig-name" style="padding-left:10px;font-size: 26px;font-weight: 700;"></span>
                 <span style="padding-left:10px;font-size: 22px;">运维</span>
             </div>
         </div>
         <div data-options="region:'west',split:true" title=" " style="width:200px;">
             <div style="width:100%;border-bottom:1px solid #e4e5e7;text-align:center;padding:10px 0;">
-                <img class="login-account-dom" src="./index/image/head.png" style="width:60px;">
+                <img class="login-account-dom" src="./page/index/image/head.png" style="width:60px;">
                 <div class="login-cover-dom" style="color: rgb(119, 119, 119);">&nbsp;</div>
             </div>
             <ul class="menu ztree"

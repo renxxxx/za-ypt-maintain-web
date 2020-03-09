@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>医品通-运维-医生评价管理</title>
+    <title>医品通-运维-用户管理</title>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
 
@@ -43,27 +43,17 @@
 
             $('#datagrid').datagrid({
             columns: [[
-                
                 {
-                    field: 'image', title: '图片', width: 60, align: 'center', halign: 'center', formatter: function (value, row, index) {
-                        debugger
-                        var str = ''
-                        var arr=null;
-                        if(value){
-                            arr=value.split(',');
-                            $(arr).each(function(index,ele){
-                                if(index > 0)
-                                    str=str+`<img src='${ele}' style='display:none;' data-original='${ele}'/>`
-                            })
-                        }
-                           
-                        return arr ? `<span class="image-previewer"><img src='${arr[0]}' style='width:50px;cursor:pointer;' data-original='${arr[0]}'/>${str}</span>` : value
+                    field: 'cover', title: '封面', width: 60, align: 'center', halign: 'center', formatter: function (value, row, index) {
+                        return value ? `<span class="image-previewer"><img src='${value}' style='width:50px;cursor:pointer;' data-original='${value}'/></span>` : value
                     }
                 },
-                { field: 'star', title: '星', width: 50, align: 'right', halign: 'center' , sortable: true},
-                { field: 'userName', title: '用户', width: 200, align: 'left', halign: 'center' },
-                { field: 'doctorName', title: '姓名', width: 200, align: 'left', halign: 'center' },
-                { field: 'hospitalName', title: '医院', width: 200, align: 'left', halign: 'center' },
+                 { field: 'hospitalName', title: '医院', width: 200, align: 'left', halign: 'center' },
+
+                { field: 'type', title: '类型', width: 100, align: 'left', halign: 'center', formatter: function (value, row, index) {
+                        return value == 0 ? '普通' :value==1?'管理':'未知';
+                    } 
+                },
                 { field: 'remark', title: '备注', width: 200, align: 'left', halign: 'center' },
                 {
                     field: 'frozen', title: '冻结', width: 50, align: 'center', halign: 'center', formatter: function (value, row, index) {
@@ -80,14 +70,15 @@
             frozenColumns: [[
                 { field: 'ck', align: 'left', checkbox: true },
                 {
-                    field: 'content', title: '内容', width: 250, align: 'left', halign: 'center', formatter: function (value, row, index) {
-                        return `<a href="JavaScript:void(0)" style="width:100%;display:inline-block;" title="${value || ''}" onclick="common.newTab('医生评价:${row.content.substring(0, 10) + '...'}','/maintain/doctor-comment.html?doctorCommentId=${row.doctorCommentId}')">${value}</a>`;
+                    field: 'name', title: '名称', width: 250, align: 'left', halign: 'center', formatter: function (value, row, index) {
+                      
+                        return `<a href="JavaScript:void(0)" style="width:100%;display:inline-block;" title="${value || ''}" onclick="common.newTab('用户:${row.name.substring(0, 10) + '...'}','/maintain/hospital-maintain-user.html?hospitalMaintainUserId=${row.hospitalMaintainUserId}')">${value}</a>`;
                     }, styler: function (value, row, index) {
                         return ``
                     }
                 }
             ]],
-            idField: 'doctorCommentId',
+            idField: 'hospitalMaintainUserId',
             toolbar: `#datagridToolBar`,
             footer: `#datagridFoot`,
             pagination: true,
@@ -107,12 +98,12 @@
                 queryParam.ps = param.rows;
                 queryParam.pn = param.page;
                 $.ajaxSettings.async=false
-                $.get('/maintain/doctor-comments', Object.assign(param, queryParam), function (data) {
+                $.get('/maintain/hospital-maintain-users', queryParam, function (data) {
                     if (data.codeMsg)
                         layer.alert(data.codeMsg);
                     if (data.code == 0) {
                         currentRows = data.data.rows;
-                        $.get('/maintain/doctor-comments-sum', queryParam, function (data) {
+                        $.get('/maintain/hospital-maintain-users-sum', queryParam, function (data) {
                             if (data.codeMsg)
                                 layer.alert(data.codeMsg);
                             if (data.code == 0) {
@@ -173,49 +164,6 @@
             queryParam.kw=newValue
         }" style="width:300px" />
 
-        <input class="easyui-combobox" name="userId" label="用户:" labelPosition="left" labelAlign="right" style="width:300px;" data-options="
-        valueField:'userId',
-        textField:'name',
-        panelHeight:'auto',
-        mode:'remote',
-        onShowPanel:function(){
-            $(this).combobox('reload')
-        },
-        loader: function (param, success, error) {
-            debugger
-            param.kw=param.q;
-            param.ps = param.rows;
-            param.pn = param.page;
-            $.ajax({
-                url: '/maintain/users',
-                type: 'get',
-                data: param,
-                success: function (data) {
-                    if (data.code != 0) {
-                        return false;
-                    } else {
-                        success(data.data);
-                    }
-
-                }
-            })
-        },
-        onChange:function(newValue, oldValue){
-            queryParam.userId=newValue
-        },
-        loadFilter: function (data) {
-            debugger
-            return data.rows;
-        },
-        iconWidth:20,
-        icons:[{
-            iconCls:'icon-clear',
-            handler: function(e){
-                $(e.data.target).combobox('setValue','');
-            }
-        }]
-        ">
-
         <input class="easyui-combobox" name="hospitalId" label="医院:" labelPosition="left" labelAlign="right" style="width:300px;" data-options="
         valueField:'hospitalId',
         textField:'name',
@@ -259,77 +207,28 @@
         }]
         ">
 
-        <input class="easyui-combobox" name="doctorId" label="医生:" labelPosition="left" labelAlign="right" style="width:300px;" data-options="
-        valueField:'doctorId',
-        textField:'name',
-        panelHeight:'auto',
-        mode:'remote',
-        onShowPanel:function(){
-            $(this).combobox('reload')
-        },
-        loader: function (param, success, error) {
-            debugger
-            if(!queryParam.hospitalId)
-                return
-            param.kw=param.q;
-            param.hospitalId=queryParam.hospitalId;
-            param.ps = param.rows;
-            param.pn = param.page;
-            $.ajax({
-                url: '/maintain/doctors',
-                type: 'get',
-                data: param,
-                success: function (data) {
-                    if (data.code != 0) {
-                        return false;
-                    } else {
-                        success(data.data);
-                    }
+        <input id="queryParam.type" class="easyui-combobox" label="类型:" labelPosition="left" labelAlign="right" style="width:300px" data-options="editable:false,panelHeight:'auto',value:'',data:[
+   {
+                                 text: '普通',
+                                 value: '0'
+                             },{
+                                 text: '管理',
+                                 value: '1'
+                             }],
+    iconWidth:20,
+    icons:[{
+        iconCls:'icon-clear',
+        handler: function(e){
+            $(e.data.target).combobox('setValue','');
+        }
+    }],
+    onChange:function(newValue, oldValue){
+        debugger
+        this
+        queryParam.type=newValue
+    }" />
 
-                }
-            })
-        },
-        onChange:function(newValue, oldValue){
-            queryParam.doctorId=newValue
-        },
-        loadFilter: function (data) {
-            debugger
-            return data.rows;
-        },
-        iconWidth:20,
-        icons:[{
-            iconCls:'icon-clear',
-            handler: function(e){
-                $(e.data.target).combobox('setValue','');
-            }
-        }]
-        ">
-
-        <input id="queryParam.starFrom" class="easyui-numberbox" label="星星:" labelPosition="left" labelAlign="right" data-options="
-        iconWidth:20,
-        icons:[{
-            iconCls:'icon-clear',
-            handler: function(e){
-                $(e.data.target).textbox('setValue','');
-            }
-        }],
-        onChange:function(newValue, oldValue){
-            debugger
-            queryParam.starFrom=newValue
-        }" style="width:300px" />
-
-        <input id="queryParam.starTo" class="easyui-numberbox" label="To:" labelPosition="left" labelAlign="right" data-options="
-        iconWidth:20,
-        icons:[{
-            iconCls:'icon-clear',
-            handler: function(e){
-                $(e.data.target).textbox('setValue','');
-            }
-        }],
-        onChange:function(newValue, oldValue){
-            debugger
-            queryParam.starTo=newValue
-        }" style="width:300px" />
+    
 
             <input id="queryParam.createTimeFrom" class="easyui-datebox" label="创建时间:" labelPosition="left" labelAlign="right" style="width:300px" data-options="
         editable:false,
@@ -382,10 +281,10 @@ onChange:function(newValue, oldValue){
             </table>
             <div id="datagridFoot" style="padding:2px 5px;">
                 <a href="JavaScript:void(0)" class="easyui-linkbutton" title="创建" iconCls="icon-add" plain="true"
-                    onclick=" common.newTab('创建医生评价','create-doctor-comment.html')">创建</a>
+                    onclick=" common.newTab('创建用户','create-hospital-maintain-user.html')">创建</a>
                 <a href="JavaScript:void(0)" class="easyui-linkbutton" title="全部删除" iconCls="icon-edit" plain="true"
                     onclick="
-                        var ids = $($('#datagrid').datagrid('getChecked')).oneall('attrs','doctorCommentId');
+                        var ids = $($('#datagrid').datagrid('getChecked')).oneall('attrs','hospitalMaintainUserId');
                          ids = ids==null?[]:ids;
                          layer.open({
                         type: 2,
@@ -393,18 +292,18 @@ onChange:function(newValue, oldValue){
                         shadeClose: false,
                         area:['60%','90%'],
                         shade: 0.5,
-                        content: './update-doctor-comments.html?'+$.param($.extend({},queryParam,{doctorCommentId:ids.length==0?null:ids.join(),expectedRowCount:ids.length==0?sum.rowCount:ids.length}))
+                        content: './update-hospital-maintain-users.html?'+$.param($.extend({},queryParam,{hospitalMaintainUserId:ids.length==0?null:ids.join(),expectedRowCount:ids.length==0?sum.rowCount:ids.length}))
                       }); ">批量修改</a>
                 <a href="JavaScript:void(0)" class="easyui-linkbutton" title="删除" iconCls="icon-remove" plain="true"
                     onclick="
                         debugger
-                        var ids = $($('#datagrid').datagrid('getChecked')).oneall('attrs','doctorCommentId')
+                        var ids = $($('#datagrid').datagrid('getChecked')).oneall('attrs','hospitalMaintainUserId')
                          ids = ids==null?[]:ids;
                             layer.confirm(ids.length==0?'未选择任何记录, 将删除所有已查出的 '+ sum.rowCount +' 条记录, 确认删除吗?':('已选择 '+ids.length+' 条记录, 确认删除吗?'),function(){
                                         $.ajax({
                                     type: 'post',
-                                    url: '/maintain/update-doctor-comments',
-                                    data: $.extend({},queryParam,{doctorCommentId:ids.length==0?null:ids.join(),delNew:1,expectedRowCount:ids.length==0?sum.rowCount:ids.length}),
+                                    url: '/maintain/update-hospital-maintain-users',
+                                    data: $.extend({},queryParam,{hospitalMaintainUserId:ids.length==0?null:ids.join(),delNew:1,expectedRowCount:ids.length==0?sum.rowCount:ids.length}),
                                     beforeSend:function(){
                                         this.layerIndex=layer.load(2)
                                     },

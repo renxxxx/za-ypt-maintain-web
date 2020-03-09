@@ -110,17 +110,17 @@
     </style>
 
     <script>
-        var account, password, param,serverConfig,config;
+        var account, password, param,projectConfig,config;
 
         $(document).ready(function () {
             debugger
             $.get('/oss/alive/config.json', function (res) {
                 debugger
-                serverConfig = res;
-                $('#param-name').text(serverConfig.name)
-                $('title').text(serverConfig.name + ' - 运维')
-                $('#version .value').text(serverConfig.version).click(function(){
-                    layer.alert(serverConfig.versionIntro?serverConfig.versionIntro.replace(/\n/g,'</br>'):serverConfig.versionIntro)
+                projectConfig = res;
+                $('#projectConfig-name').text(projectConfig.name)
+                $('title').text(projectConfig.name + ' - 运维')
+                $('#version .value').text(projectConfig.version).click(function(){
+                    layer.alert(projectConfig.versionIntro?projectConfig.versionIntro.replace(/\n/g,'</br>'):projectConfig.versionIntro)
                 })
             })
 
@@ -154,12 +154,12 @@
     </script>
 </head>
 
-<body style="width: 100%;height: 100%;background: url('./login/image/background.png');background-size: cover;">
+<body style="width: 100%;height: 100%;background: url('./page/login/image/background.png');background-size: cover;">
     <div style="margin-bottom:5%;"></div>
     <div class="logo smargin"
         style="text-align: center;margin-top: 1.67rem;margin-bottom: 0.91rem;">
         <div><img src='./favicon.ico'></div>
-        <h2 id="param-name" style="margin-top:10px;"></h2>
+        <h2 id="projectConfig-name" style="margin-top:10px;"></h2>
     </div>
     <h3 style="margin-top:10px;text-align: center;">运维</h3>
 
@@ -167,14 +167,14 @@
         <div class="number phone">
             <input type="text" oninput="account=this.value" />
             <div>
-                <img src="./login/image/zhanghu.png" alt="" />
+                <img src="./page/login/image/zhanghu.png" alt="" />
                 <span>账户</span>
             </div>
         </div>
         <div class="number password" style="margin-top: 24px">
             <input type="password" oninput="password=this.value" />
             <div>
-                <img src="./login/image/mima.png" alt="" />
+                <img src="./page/login/image/mima.png" alt="" />
                 <span>密码</span>
             </div>
         </div>
@@ -224,9 +224,9 @@
                         layer.close(this.layerIndex)
                     }
             })">登录</button>
-            <!-- <div style="text-align: right;">
-                <a href="/">官网</a>
-            </div> -->
+             <div style="text-align: right;">
+                <a href="/entrance.html">选择入口</a>
+            </div> 
         </div>
     </div>
     <div class="zdlogin">
