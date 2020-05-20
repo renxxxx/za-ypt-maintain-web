@@ -100,8 +100,9 @@
                 callback: {
                     onClick: function (e, treeId, treeNode) {
                         if (treeNode.name == '退出登录') {
-                            $.post('/maintain/logout')
-                            location.href = './login.html';
+                            $.post('/maintain/logout',function(){
+                                location.href = './login.html';
+                            })
                             return;
                         }
                         if (treeNode._url)
