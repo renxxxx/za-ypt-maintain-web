@@ -140,7 +140,7 @@
             }
         });
 
-        $.post('/maintain/login-refresh', function (data) {
+        $.post('/ypt/maintain/login-refresh', function (data) {
             if (data.code == 0) {
                 layer.msg('已登录, 跳转中...');
                 localStorage.setItem('maintainLogin', data.data)
@@ -189,7 +189,7 @@
             <button id="enterClick" onclick=" 
 
             $.ajax({
-                url:'/maintain/login',
+                url:'/ypt/maintain/login',
                 type:'post',
                 data:{ account: account, password: password },
                 beforeSend:function(){
@@ -200,7 +200,7 @@
                         layer.alert(data.codeMsg);
                     if (data.code == 0) {
                         $.ajax(
-                            {url:'/maintain/login-refresh',
+                            {url:'/ypt/maintain/login-refresh',
                             type:'post',
                             beforeSend:function(){
                                             this.layerIndex=layer.load(2)

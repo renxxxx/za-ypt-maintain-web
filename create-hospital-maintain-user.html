@@ -81,7 +81,7 @@ function createConfirm(){
     layer.confirm('确认创建吗?',function(){
         $.ajax({
                             type: 'post',
-                            url: '/maintain/create-hospital-maintain-user',
+                            url: '/ypt/maintain/create-hospital-maintain-user',
                             data: hospitalMaintainUser,
                             beforeSend:function(){
                                             this.layerIndex=layer.load(2)
@@ -268,7 +268,7 @@ function createConfirm(){
                             param.ps = param.rows;
                             param.pn = param.page;
                             $.ajax({
-                                url: '/maintain/hospitals',
+                                url: '/ypt/maintain/hospitals',
                                 type: 'get',
                                 data: param,
                                 success: function (data) {

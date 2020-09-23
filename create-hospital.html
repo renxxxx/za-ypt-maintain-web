@@ -116,7 +116,7 @@ function createConfirm(){
                         hospital.contentUrl=res.data.url
                          $.ajax({
                             type: 'post',
-                            url: '/maintain/create-hospital',
+                            url: '/ypt/maintain/create-hospital',
                             data: hospital,
                             beforeSend:function(){
                                             this.layerIndex=layer.load(2)

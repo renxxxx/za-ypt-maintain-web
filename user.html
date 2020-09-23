@@ -50,7 +50,7 @@
     
     $.ajax({
         type: 'get',
-        url: `/maintain/user-${queryStringObject.userId}`,
+        url: `/ypt/maintain/user-${queryStringObject.userId}`,
         async: false,
         success: function (data) {
             debugger
@@ -92,7 +92,7 @@ function updateConfirm(){
     layer.confirm('确认修改吗?',function(){
         $.ajax({
                             type: 'post',
-                            url: '/maintain/update-user',
+                            url: '/ypt/maintain/update-user',
                             data: user,
                             beforeSend:function(){
                                 this.layerIndex=layer.load(2)
@@ -125,7 +125,7 @@ function remove(){
         
         $.ajax({
                             type: 'post',
-                            url: '/maintain/update-user',
+                            url: '/ypt/maintain/update-user',
                             data: {userId:user.userId,del:1},
                             beforeSend:function(){
                                 this.layerIndex=layer.load(2)
@@ -162,7 +162,7 @@ function remove(){
 
     //         $.ajax({
     //             type: 'get',
-    //             url: `/maintain/user-article/${rowPad.param.userArticleId}`,
+    //             url: `/ypt/maintain/user-article/${rowPad.param.userArticleId}`,
     //             async: false,
     //             data: { token: rowPad.param.token },
     //             success: function (data) {
@@ -184,7 +184,7 @@ function remove(){
     //     rowAlter: function () {
     //         $.ajax({
     //             type: 'post',
-    //             url: '/maintain/user-article-alter',
+    //             url: '/ypt/maintain/user-article-alter',
     //             data: Object.assign({ token: rowPad.param.token, userArticleId: rowPad.param.userArticleId, content: rowPad.contentKindEditor.html() }, rowPad.row),
     //             success: function (data) {
     //                 if (data.codeMsg)
@@ -318,7 +318,7 @@ function remove(){
                             param.ps = param.rows;
                             param.pn = param.page;
                             $.ajax({
-                                url: '/maintain/hospitals',
+                                url: '/ypt/maintain/hospitals',
                                 type: 'get',
                                 data: param,
                                 success: function (data) {
@@ -397,7 +397,7 @@ function remove(){
                             param.ps = param.rows;
                             param.pn = param.page;
                             $.ajax({
-                                url: '/maintain/doctors',
+                                url: '/ypt/maintain/doctors',
                                 type: 'get',
                                 data: param,
                                 success: function (data) {
@@ -444,7 +444,7 @@ function remove(){
                             param.ps = param.rows;
                             param.pn = param.page;
                             $.ajax({
-                                url: '/maintain/nurses',
+                                url: '/ypt/maintain/nurses',
                                 type: 'get',
                                 data: param,
                                 success: function (data) {

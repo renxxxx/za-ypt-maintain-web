@@ -57,7 +57,7 @@
         });
 
         $.ajaxSettings.async=false
-        $.post('/maintain/login-refresh', function (data) {
+        $.post('/ypt/maintain/login-refresh', function (data) {
             if (data.code == 0) {
                 login=data.data
                 localStorage.setItem('maintainLogin', login)
@@ -100,7 +100,7 @@
                 callback: {
                     onClick: function (e, treeId, treeNode) {
                         if (treeNode.name == '退出登录') {
-                            $.post('/maintain/logout',function(){
+                            $.post('/ypt/maintain/logout',function(){
                                 location.href = './login.html';
                             })
                             return;
