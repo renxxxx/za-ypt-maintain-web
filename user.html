@@ -353,6 +353,30 @@ function remove(){
                         "></td>
                 </tr>
                 <tr>
+                    <td>用户属性&nbsp;</td>
+                    <td><input id="usertype" class="easyui-combobox" style="width:100%" data-options="
+                                    value:user.hospitalMaintainIs,
+                                    editable:false,panelHeight:'auto',
+                                    data:[
+                                    {
+                                         text: '普通用户',
+                                         value: '0'
+                                     },{
+                                         text: '运维用户',
+                                         value: '1'
+                                     }],
+                                     iconWidth:20,
+                                     icons:[{
+                                         iconCls:'icon-clear',
+                                         handler: function(e){
+                                             $(e.data.target).combobox('setValue','');
+                                         }
+                                     }],
+                                     onChange:function(newValue, oldValue){
+                                        user.hospitalMaintainIs=newValue
+                                     }" /></td>
+                </tr>
+                <tr>
                     <td>类型&nbsp;</td>
                     <td><input id="type" class="easyui-combobox" style="width:100%" data-options="
                                     value:user.type,

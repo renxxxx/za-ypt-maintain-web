@@ -57,7 +57,7 @@
                 {
                     field: 'name', title: '名称', width: 250, align: 'left', halign: 'center', formatter: function (value, row, index) {
                       
-                        return `<a href="JavaScript:void(0)" style="width:100%;display:inline-block;" title="${value || ''}" onclick="common.newTab('配置:${row.name.substring(0, 10) + '...'}','/ypt/maintain/config.html?configId=${row.configId}')">${value}</a>`;
+                        return `<a href="JavaScript:void(0)" style="width:100%;display:inline-block;" title="${value || ''}" onclick="common.newTab('配置:${row.name.substring(0, 10) + '...'}','../config.html?configId=${row.configId}')">${value}</a>`;
                     }, styler: function (value, row, index) {
                         return ``
                     }
