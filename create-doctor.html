@@ -139,7 +139,7 @@ function createConfirm(){
                                     var fd = new FormData()
                                     fd.append('file', file);
                                     $.ajax({
-                                        url: '/upload-static-file?' + $.param({ quality: 0.8 }),
+                                        url: '/ypt/upload-file?' + $.param({ quality: 0.8 }),
                                         type: 'POST',
                                         data: fd,
                                         cache: false,
@@ -188,7 +188,7 @@ function createConfirm(){
                                     var fd = new FormData()
                                     fd.append('file', file);
                                     $.ajax({
-                                        url: '/upload-static-file?' + $.param({ quality: 0.8 }),
+                                        url: '/ypt/upload-file?' + $.param({ quality: 0.8 }),
                                         type: 'POST',
                                         data: fd,
                                         cache: false,

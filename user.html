@@ -46,7 +46,7 @@
 
     var queryStringObject = common.queryStringObject();
     var user = {}
-
+    var passwordConfirm = ''
     
     $.ajax({
         type: 'get',
@@ -89,6 +89,10 @@
 
 function updateConfirm(){
     debugger
+    if(user.password != passwordConfirm){
+        layer.alert('两次密码不一致')
+        return;
+    }
     layer.confirm('确认修改吗?',function(){
         $.ajax({
                             type: 'post',
@@ -254,6 +258,38 @@ function remove(){
                         }" style="width:200px"></td>
                 </tr>
                 <tr>
+                    <td>密码&nbsp;</td>
+                    <td><input id="password" class="easyui-passwordbox" style="width:100%" data-options="
+                        value:user.password,
+                        iconWidth:20,
+                        icons:[{
+                            iconCls:'icon-clear',
+                            handler: function(e){
+                                debugger
+                                $(e.data.target).passwordbox('setValue','');
+                            }
+                        }],
+                        onChange:function(newValue, oldValue){
+                            user.password=newValue
+                        }" style="width:200px"></td>
+                </tr>
+                <tr>
+                    <td>确认密码&nbsp;</td>
+                    <td><input id="passwordConfirm" class="easyui-passwordbox" style="width:100%" data-options="
+                        value:passwordConfirm,
+                        iconWidth:20,
+                        icons:[{
+                            iconCls:'icon-clear',
+                            handler: function(e){
+                                debugger
+                                $(e.data.target).passwordbox('setValue','');
+                            }
+                        }],
+                        onChange:function(newValue, oldValue){
+                            passwordConfirm=newValue
+                        }" style="width:200px"></td>
+                </tr>
+                <tr>
                     <td>封面&nbsp;</td>
                     <td>
                         <div id="cover">
@@ -266,7 +302,7 @@ function remove(){
                                     var fd = new FormData()
                                     fd.append('file', file);
                                     $.ajax({
-                                        url: '/upload-static-file?' + $.param({ quality: 0.8 }),
+                                        url: '/ypt/upload-file?' + $.param({ quality: 0.8 }),
                                         type: 'POST',
                                         data: fd,
                                         cache: false,
