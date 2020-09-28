@@ -82,6 +82,7 @@
                 debugger
                 queryParam.ps = param.rows;
                 queryParam.pn = param.page;
+                Object.assign(queryParam, param);
                 $.ajaxSettings.async=false
                 $.get('/ypt/maintain/configs', queryParam, function (data) {
                     if (data.codeMsg)
