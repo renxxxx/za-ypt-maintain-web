@@ -46,7 +46,8 @@
 
     var queryStringObject = common.queryStringObject();
     var user = {}
-    var passwordConfirm = ''
+    var modifyPassword = ''
+    var modifyPasswordConfirm = ''
     
     $.ajax({
         type: 'get',
@@ -89,37 +90,72 @@
 
 function updateConfirm(){
     debugger
-    if(user.password != passwordConfirm){
-        layer.alert('两次密码不一致')
-        return;
-    }
+    // if(user.password != passwordConfirm){
+    //     layer.alert('两次密码不一致')
+    //     return;
+    // }
     layer.confirm('确认修改吗?',function(){
         $.ajax({
-                            type: 'post',
-                            url: '/ypt/maintain/update-user',
-                            data: user,
-                            beforeSend:function(){
-                                this.layerIndex=layer.load(2)
-                            },
-                            success: function (res) {
-                                debugger
-                                if (res.codeMsg)
-                                    layer.alert(res.codeMsg)
-                                if (res.code == 0) {
-                                    if (!res.codeMsg)
-                                        layer.alert('操作成功',function(){
-                                            location.reload()
-                                        })
-                                } 
-                            },
-                                        complete:function(){
-                                            layer.close(this.layerIndex)
-                                        }
+            type: 'post',
+            url: '/ypt/maintain/update-user',
+            data: user,
+            beforeSend:function(){
+                this.layerIndex=layer.load(2)
+            },
+            success: function (res) {
+                debugger
+                if (res.codeMsg)
+                    layer.alert(res.codeMsg)
+                if (res.code == 0) {
+                    if (!res.codeMsg)
+                        layer.alert('操作成功',function(){
+                            location.reload()
                         })
+                } 
+            },
+                        complete:function(){
+                            layer.close(this.layerIndex)
+                        }
+        })
     })
     
 }
-        
+function modifyPasswordFn(){
+    debugger
+    if($('#passwordId').val() != $('#passwordConfirmId').val()){
+        layer.alert('两次密码不一致')
+        return;
+    }
+    let _data = {
+        userId:user.userId,
+        password:$('#passwordId').val()
+    }
+    layer.confirm('确认修改吗?',function(){
+        $.ajax({
+            type: 'post',
+            url: '/ypt/maintain/update-user',
+            data: _data,
+            beforeSend:function(){
+                this.layerIndex=layer.load(2)
+            },
+            success: function (res) {
+                debugger
+                if (res.codeMsg)
+                    layer.alert(res.codeMsg)
+                if (res.code == 0) {
+                    if (!res.codeMsg)
+                        layer.alert('操作成功',function(){
+                            location.reload()
+                        })
+                } 
+            },
+                        complete:function(){
+                            layer.close(this.layerIndex)
+                        }
+        })
+    })
+    
+}
 
 
              
@@ -255,38 +291,6 @@ function remove(){
                         }],
                         onChange:function(newValue, oldValue){
                             user.phone=newValue
-                        }" style="width:200px"></td>
-                </tr>
-                <tr>
-                    <td>密码&nbsp;</td>
-                    <td><input id="password" class="easyui-passwordbox" style="width:100%" data-options="
-                        value:user.password,
-                        iconWidth:20,
-                        icons:[{
-                            iconCls:'icon-clear',
-                            handler: function(e){
-                                debugger
-                                $(e.data.target).passwordbox('setValue','');
-                            }
-                        }],
-                        onChange:function(newValue, oldValue){
-                            user.password=newValue
-                        }" style="width:200px"></td>
-                </tr>
-                <tr>
-                    <td>确认密码&nbsp;</td>
-                    <td><input id="passwordConfirm" class="easyui-passwordbox" style="width:100%" data-options="
-                        value:passwordConfirm,
-                        iconWidth:20,
-                        icons:[{
-                            iconCls:'icon-clear',
-                            handler: function(e){
-                                debugger
-                                $(e.data.target).passwordbox('setValue','');
-                            }
-                        }],
-                        onChange:function(newValue, oldValue){
-                            passwordConfirm=newValue
                         }" style="width:200px"></td>
                 </tr>
                 <tr>
@@ -608,8 +612,35 @@ function remove(){
 
             </tbody>
         </table>
+        <div class="passwordAlert" style="display: none;">
+            <div class="layui-layer-shade" id="layui-layer-shade1" times="1" style="z-index: 100; background-color: rgb(0, 0, 0); opacity: 0.3;">
+            </div>
+            <div class="layui-layer layui-layer-dialog" id="layui-layer1" type="dialog" times="1" showtime="0" contype="string" style="z-index: 200; top: 0px; left: 0px;right: 0px;bottom: 0px;margin: auto;width: 275px;height: 167px;">
+                <div class="layui-layer-title" style="cursor: move;">信息</div>
+                <div>
+                    <div style="margin: 0px 2.5px;margin: 10px 0px;">
+                        <span style="display: inline-block;width: 50px;text-align: right;">密码</span>
+                        <input type="text" name="" id="passwordId" style="display: inline-block;height: 30px;width: auto;min-width: 200px;">
+                    </div>
+                    <div style="margin: 0px 2.5px;">
+                        <span style="display: inline-block;width: 50px;text-align: right;">确认密码</span>
+                        <input type="text" name="" id="passwordConfirmId" style="display: inline-block;height: 30px;width: auto;min-width: 200px;">
+
+                    </div>
+                </div>
+                <span class="layui-layer-setwin">
+                    <a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:;"></a>
+                </span>
+                <div class="layui-layer-btn layui-layer-btn-">
+                    <a class="layui-layer-btn0" onclick="modifyPasswordFn()">确定</a>
+                    <a class="layui-layer-btn1" onclick="$('.passwordAlert').css('display', 'none');$('.passwordAlert').val('');$('.passwordConfirmId').val('')">取消</a>
+                </div>
+                <span class="layui-layer-resize"></span>
+            </div>
+        </div>
         
         <div style="margin-left:5px;margin-top:5px;">
+            <div id="dd">Dialog Content.</div>
             <a id="update" href="JavaScript:void(0)" class="easyui-linkbutton" iconCls="icon-edit"
                 onclick="$('#update,#remove,#reload').hide();$('#updateConfirm,#updateCancel').show()">修改</a>
             <a id="remove" href="JavaScript:void(0)" class="easyui-linkbutton" iconCls="icon-remove"
@@ -620,7 +651,10 @@ function remove(){
                 onclick="updateConfirm()">确认</a>
             <a id="updateCancel" href="JavaScript:void(0)" class="easyui-linkbutton" style="display:none;" iconCls="icon-cancel"
                 onclick="$('#update,#remove,#reload').show();$('#updateConfirm,#updateCancel').hide()">取消</a>
+            <a id="modifyPassword" href="JavaScript:void(0)" class="easyui-linkbutton" iconCls="icon-edit"
+                onclick="$('.passwordAlert').css('display', 'block')">修改密码</a>
         </div>
+        
 </body>
 <script>
         $('#datagrid').datagrid()
