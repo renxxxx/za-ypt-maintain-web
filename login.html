@@ -110,7 +110,7 @@
     </style>
 
     <script>
-        var account, password, param,projectConfig,config;
+        var account = '', password = '', param, projectConfig, config;
 
         $(document).ready(function () {
             debugger
@@ -119,15 +119,15 @@
                 projectConfig = res;
                 $('#projectConfig-name').text(projectConfig.name)
                 $('title').text(projectConfig.name + ' - 运维')
-                $('#version .value').text(projectConfig.version).click(function(){
-                    layer.alert(projectConfig.versionIntro?projectConfig.versionIntro.replace(/\n/g,'</br>'):projectConfig.versionIntro)
+                $('#version .value').text(projectConfig.version).click(function () {
+                    layer.alert(projectConfig.versionIntro ? projectConfig.versionIntro.replace(/\n/g, '</br>') : projectConfig.versionIntro)
                 })
             })
 
             $.get('./config.json', function (res) {
                 debugger
                 config = res;
-                $('#version .value').text(config.version).click(function(){
+                $('#version .value').text(config.version).click(function () {
                     layer.alert(config.versionIntro)
                 })
             })
@@ -156,8 +156,7 @@
 
 <body style="width: 100%;height: 100%;background: url('./page/login/image/background.png');background-size: cover;">
     <div style="margin-bottom:5%;"></div>
-    <div class="logo smargin"
-        style="text-align: center;margin-top: 1.67rem;margin-bottom: 0.91rem;">
+    <div class="logo smargin" style="text-align: center;margin-top: 1.67rem;margin-bottom: 0.91rem;">
         <div><img src='./favicon.ico'></div>
         <h2 id="projectConfig-name" style="margin-top:10px;"></h2>
     </div>
@@ -165,6 +164,7 @@
 
     <div id="loginPad" style="margin-top:10px;">
         <div class="number phone">
+            <!-- <input type="text" oninput="account=this.value" /> -->
             <input type="text" oninput="account=this.value" />
             <div>
                 <img src="./page/login/image/zhanghu.png" alt="" />
@@ -186,12 +186,11 @@
             <div class="rt forgetpassword">忘记密码</div>
         </div>
         <div class="loginbtn" style="margin-top:20px;">
-            <button id="enterClick" onclick=" 
-
+            <button id="enterClick" onclick="
             $.ajax({
                 url:'/ypt/maintain/login',
                 type:'post',
-                data:{ account: account, password: password },
+                data:{ account: $('.phone input').val(), password: $('.password input').val() },
                 beforeSend:function(){
                                             this.layerIndex=layer.load(2)
                                         },
@@ -224,18 +223,18 @@
                         layer.close(this.layerIndex)
                     }
             })">登录</button>
-             <div style="text-align: right;">
+            <div style="text-align: right;">
                 <a href="/entrance.html">选择入口</a>
-            </div> 
+            </div>
         </div>
     </div>
     <div class="zdlogin">
         <!--<div class="registernow rt" style="color: #1890ff;cursor: pointer;">注册账户</div>-->
     </div>
 
-        <div id="version"  style="color:gray;position: fixed;bottom:10px;left:50%;transform:  translateX(-50%);">
-            version: <a class="value" href="javascript:(0)"  style="color:gray"></a>
-        </div>
+    <div id="version" style="color:gray;position: fixed;bottom:10px;left:50%;transform:  translateX(-50%);">
+        version: <a class="value" href="javascript:(0)" style="color:gray"></a>
+    </div>
 </body>
 <script>
 
