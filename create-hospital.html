@@ -103,7 +103,7 @@ function createConfirm(){
         $.ajax({
                 type: 'post',
                 contentType:"text/plain",
-                url: '/upload-alive-stream?'+$.param({'originalUrl':hospital.contentUrl,ext:'html'}),
+                url: '/ypt/upload-stream?'+$.param({'originalUrl':hospital.contentUrl,ext:'html'}),
                 data: contentKindEditor.html(),
                 beforeSend:function(){
                                             this.layerIndex=layer.load(2)
@@ -116,7 +116,7 @@ function createConfirm(){
                         hospital.contentUrl=res.data.url
                          $.ajax({
                             type: 'post',
-                            url: '/maintain/create-hospital',
+                            url: '/ypt/maintain/create-hospital',
                             data: hospital,
                             beforeSend:function(){
                                             this.layerIndex=layer.load(2)
@@ -193,7 +193,7 @@ function createConfirm(){
                                     var fd = new FormData()
                                     fd.append('file', file);
                                     $.ajax({
-                                        url: '/upload-static-file?' + $.param({ quality: 0.8 }),
+                                        url: '/ypt/upload-file?' + $.param({ quality: 0.8 }),
                                         type: 'POST',
                                         data: fd,
                                         cache: false,
@@ -241,7 +241,7 @@ function createConfirm(){
                                     var fd = new FormData()
                                     fd.append('file', file);
                                     $.ajax({
-                                        url: '/upload-static-file?' + $.param({ quality: 0.8 }),
+                                        url: '/ypt/upload-file?' + $.param({ quality: 0.8 }),
                                         type: 'POST',
                                         data: fd,
                                         cache: false,

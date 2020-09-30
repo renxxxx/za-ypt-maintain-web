@@ -50,7 +50,7 @@
     
     $.ajax({
         type: 'get',
-        url: `/maintain/config-${queryStringObject.configId}`,
+        url: `/ypt/maintain/config-${queryStringObject.configId}`,
         async: false,
         success: function (data) {
             debugger
@@ -89,7 +89,7 @@ function updateConfirm(){
        
         $.ajax({
                             type: 'post',
-                            url: '/maintain/update-config',
+                            url: '/ypt/maintain/update-config',
                             data: config,
                             beforeSend:function(){
                                 this.layerIndex=layer.load(2)
@@ -126,7 +126,7 @@ function updateConfirm(){
 
     //         $.ajax({
     //             type: 'get',
-    //             url: `/maintain/config-article/${rowPad.param.configArticleId}`,
+    //             url: `/ypt/maintain/config-article/${rowPad.param.configArticleId}`,
     //             async: false,
     //             data: { token: rowPad.param.token },
     //             success: function (data) {
@@ -148,7 +148,7 @@ function updateConfirm(){
     //     rowAlter: function () {
     //         $.ajax({
     //             type: 'post',
-    //             url: '/maintain/config-article-alter',
+    //             url: '/ypt/maintain/config-article-alter',
     //             data: Object.assign({ token: rowPad.param.token, configArticleId: rowPad.param.configArticleId, content: rowPad.contentKindEditor.html() }, rowPad.row),
     //             success: function (data) {
     //                 if (data.codeMsg)

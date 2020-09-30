@@ -68,7 +68,7 @@ function createConfirm(){
     layer.confirm('确认创建吗?',function(){
         $.ajax({
                             type: 'post',
-                            url: '/maintain/create-doctor',
+                            url: '/ypt/maintain/create-doctor',
                             data: doctor,
                             beforeSend:function(){
                                             this.layerIndex=layer.load(2)
@@ -139,7 +139,7 @@ function createConfirm(){
                                     var fd = new FormData()
                                     fd.append('file', file);
                                     $.ajax({
-                                        url: '/upload-static-file?' + $.param({ quality: 0.8 }),
+                                        url: '/ypt/upload-file?' + $.param({ quality: 0.8 }),
                                         type: 'POST',
                                         data: fd,
                                         cache: false,
@@ -188,7 +188,7 @@ function createConfirm(){
                                     var fd = new FormData()
                                     fd.append('file', file);
                                     $.ajax({
-                                        url: '/upload-static-file?' + $.param({ quality: 0.8 }),
+                                        url: '/ypt/upload-file?' + $.param({ quality: 0.8 }),
                                         type: 'POST',
                                         data: fd,
                                         cache: false,
@@ -267,7 +267,7 @@ function createConfirm(){
                             param.ps = param.rows;
                             param.pn = param.page;
                             $.ajax({
-                                url: '/maintain/hospitals',
+                                url: '/ypt/maintain/hospitals',
                                 type: 'get',
                                 data: param,
                                 success: function (data) {
@@ -316,7 +316,7 @@ function createConfirm(){
                             param.ps = param.rows;
                             param.pn = param.page;
                             $.ajax({
-                                url: '/maintain/offices',
+                                url: '/ypt/maintain/offices',
                                 type: 'get',
                                 data: param,
                                 success: function (data) {

@@ -41,9 +41,7 @@
 
       
         $(document).ready(function () {
-            debugger
             $.get('/oss/alive/config.json',function(res){
-                debugger
                 projectConfig = res;
                 $('#projectConfig-name').text(projectConfig.name)
                 $('title').text(projectConfig.name + ' - 运维')
@@ -57,10 +55,11 @@
         });
 
         $.ajaxSettings.async=false
-        $.post('/maintain/login-refresh', function (data) {
+        $.post('/ypt/maintain/login-refresh', function (data) {
             if (data.code == 0) {
                 login=data.data
-                localStorage.setItem('maintainLogin', login)
+                localStorage.setItem('maintainLogin', JSON.stringify(login))
+                
             } else {
                 layer.confirm('未登录，是否去登录?', { icon: 7, title: '提示' }, function (index) {
                     location.href = "./login.html"
@@ -75,12 +74,12 @@
         zNodes.push({
             name: '医院管理', children: [
                 { name: '医院管理', _url: './manage-hospital.html' },
-                { name: '运维用户', _url: './manage-hospital-maintain-user.html' }
+                // { name: '运维用户', _url: './manage-hospital-maintain-user.html' }
             ]
         })
         zNodes.push({ name: '用户管理', _url: './manage-user.html' })
         zNodes.push({ name: '医生管理', _url: './manage-doctor.html' })
-        zNodes.push({ name: '医生评价', _url: './manage-doctor-comment.html' })
+        // zNodes.push({ name: '医生评价', _url: './manage-doctor-comment.html' })
         zNodes.push({ name: '医护管理', _url: './manage-nurse.html' })
         zNodes.push({ name: '科室管理', _url: './manage-office.html' })
       // zNodes.push({ name: '广告', _url: './ad-manage.html' })
@@ -100,10 +99,13 @@
                 callback: {
                     onClick: function (e, treeId, treeNode) {
                         if (treeNode.name == '退出登录') {
-                            $.post('/maintain/logout',function(){
-                                location.href = './login.html';
+                            layer.alert('是否退出登录', {btn: ['确定','取消']},function(){
+                                $.post('/ypt/maintain/logout',function(){
+                                    location.href = './login.html';
+                                })
+                                return;
                             })
-                            return;
+                           
                         }
                         if (treeNode._url)
                             common.newTab(treeNode.name, treeNode._url)
@@ -129,13 +131,13 @@
         <div data-options="region:'north'" style="height:80px">
             <div style="margin-top:18px;">
                 <span id="projectConfig-name" style="padding-left:10px;font-size: 26px;font-weight: 700;"></span>
-                <span style="padding-left:10px;font-size: 22px;">运维</span>
+                <span style="padding-left:10px;font-size: 22px;" >运维</span>
             </div>
         </div>
         <div data-options="region:'west',split:true" title=" " style="width:200px;">
             <div style="width:100%;border-bottom:1px solid #e4e5e7;text-align:center;padding:10px 0;">
                 <img class="login-account-dom" src="./page/index/image/head.png" style="width:60px;">
-                <div class="login-cover-dom" style="color: rgb(119, 119, 119);">&nbsp;</div>
+                <div class="login-cover-dom nameClass" style="color: rgb(119, 119, 119);">&nbsp;</div>
             </div>
             <ul class="menu ztree"
                 style="width:100%;padding:0;margin:0;background-color: unset;border:none;position:relative;font-size:18px;">
@@ -166,7 +168,9 @@
     </div>
 </body>
 <script>
-
+    let account = localStorage.getItem('maintainLogin')
+    if(account)
+        $('.nameClass').html(JSON.parse(account).name)
 </script>
 
 </html>

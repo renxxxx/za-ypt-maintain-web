@@ -46,7 +46,7 @@
 
     var queryStringObject = common.queryStringObject();
     var user = {},contentKindEditor
-
+    var passwordConfirm = ''
     
   
 
@@ -74,10 +74,14 @@
 
 function createConfirm(){
     debugger
+    if(user.password != passwordConfirm){
+        layer.alert('两次密码不一致')
+        return;
+    }
     layer.confirm('确认创建吗?',function(){
         $.ajax({
                             type: 'post',
-                            url: '/maintain/create-user',
+                            url: '/ypt/maintain/create-user',
                             data: user,
                             beforeSend:function(){
                                             this.layerIndex=layer.load(2)
@@ -151,7 +155,38 @@ function createConfirm(){
                             user.phone=newValue
                         }" style="width:200px"></td>
                 </tr>
-
+                <tr>
+                    <td>密码&nbsp;</td>
+                    <td><input id="password" class="easyui-passwordbox" style="width:100%" data-options="
+                        value:user.password,
+                        iconWidth:20,
+                        icons:[{
+                            iconCls:'icon-clear',
+                            handler: function(e){
+                                debugger
+                                $(e.data.target).passwordbox('setValue','');
+                            }
+                        }],
+                        onChange:function(newValue, oldValue){
+                            user.password=newValue
+                        }" style="width:200px"></td>
+                </tr>
+                <tr>
+                    <td>确认密码&nbsp;</td>
+                    <td><input id="passwordConfirm" class="easyui-passwordbox" style="width:100%" data-options="
+                        value:passwordConfirm,
+                        iconWidth:20,
+                        icons:[{
+                            iconCls:'icon-clear',
+                            handler: function(e){
+                                debugger
+                                $(e.data.target).passwordbox('setValue','');
+                            }
+                        }],
+                        onChange:function(newValue, oldValue){
+                            passwordConfirm=newValue
+                        }" style="width:200px"></td>
+                </tr>
                 <tr>
                     <td>封面&nbsp;</td>
                     <td>
@@ -165,7 +200,7 @@ function createConfirm(){
                                     var fd = new FormData()
                                     fd.append('file', file);
                                     $.ajax({
-                                        url: '/upload-static-file?' + $.param({ quality: 0.8 }),
+                                        url: '/ypt/upload-file?' + $.param({ quality: 0.8 }),
                                         type: 'POST',
                                         data: fd,
                                         cache: false,
@@ -215,7 +250,7 @@ function createConfirm(){
                             param.ps = param.rows;
                             param.pn = param.page;
                             $.ajax({
-                                url: '/maintain/hospitals',
+                                url: '/ypt/maintain/hospitals',
                                 type: 'get',
                                 data: param,
                                 success: function (data) {
@@ -244,7 +279,30 @@ function createConfirm(){
                         }]
                         "></td>
                 </tr>
-               
+                <tr>
+                    <td>医院运维&nbsp;</td>
+                    <td><input id="usertype" class="easyui-combobox" style="width:100%" data-options="
+                                    value:user.hospitalMaintainIs,
+                                    editable:false,panelHeight:'auto',
+                                    data:[
+                                    {
+                                         text: '否',
+                                         value: '0'
+                                     },{
+                                         text: '是',
+                                         value: '1'
+                                     }],
+                                     iconWidth:20,
+                                     icons:[{
+                                         iconCls:'icon-clear',
+                                         handler: function(e){
+                                             $(e.data.target).combobox('setValue','');
+                                         }
+                                     }],
+                                     onChange:function(newValue, oldValue){
+                                        user.hospitalMaintainIs=newValue
+                                     }" /></td>
+                </tr>
                 <tr>
                     <td>类型&nbsp;</td>
                     <td><input id="type" class="easyui-combobox" style="width:100%" data-options="
@@ -288,7 +346,7 @@ function createConfirm(){
                             param.ps = param.rows;
                             param.pn = param.page;
                             $.ajax({
-                                url: '/maintain/doctors',
+                                url: '/ypt/maintain/doctors',
                                 type: 'get',
                                 data: param,
                                 success: function (data) {
@@ -333,7 +391,7 @@ function createConfirm(){
                             param.ps = param.rows;
                             param.pn = param.page;
                             $.ajax({
-                                url: '/maintain/nurses',
+                                url: '/ypt/maintain/nurses',
                                 type: 'get',
                                 data: param,
                                 success: function (data) {
