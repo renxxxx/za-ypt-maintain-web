@@ -348,7 +348,27 @@ onChange:function(newValue, oldValue){
     debugger
     queryParam.createTimeTo=newValue
 }">
-
+<input id="queryParam.hospitalMaintainIs" class="easyui-combobox" label="医院运维:" labelPosition="left" labelAlign="right" style="width:300px" data-options="editable:false,panelHeight:'auto',value:'',data:[
+{
+                              text: '否',
+                              value: '0'
+                          },{
+                              text: '是',
+                              value: '1'
+                          }],
+ iconWidth:20,
+ icons:[{
+     iconCls:'icon-clear',
+     handler: function(e){
+         $(e.data.target).combobox('setValue','');
+     }
+ }],
+ onChange:function(newValue, oldValue){
+     debugger
+     this
+     queryParam.hospitalMaintainIs=newValue
+ }" />
+</div>
             <input id="queryParam.frozen" class="easyui-combobox" label="冻结:" labelPosition="left" labelAlign="right" style="width:300px" data-options="editable:false,panelHeight:'auto',value:'',data:[
    {
                                  text: '否',
