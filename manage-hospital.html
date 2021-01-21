@@ -38,7 +38,6 @@
         var queryStringObject = common.queryStringObject();
        
         var queryParam = {}, currentRows = [], sum = {}
-
         $(document).ready(function () {
 
             $('#datagrid').datagrid({
@@ -61,7 +60,7 @@
                     }
                 },
 				{ field: 'lookWeb', title: '查看网址', width: 100, align: 'right', halign: 'center', formatter: function (value, row, index) {
-                        return `<a href="JavaScript:void(0)" style="width:100%;display:inline-block;" title="${value || ''}" onclick="alert('https://ypt.njshangka.com/ypt/hospital-maintain/login-by-hospital.html?hospitalId=${row.hospitalId}&hospital=${row.name}')">查看网址</a>`;//&loginHospitalName=${row.name}
+                        return `<a href="JavaScript:void(0)" style="width:100%;display:inline-block;" title="${value || ''}" onclick="alert('${window.location.origin||'https://njshangka.com'}/ypt/hospital-maintain/login-by-hospital.html?hospitalId=${row.hospitalId}&hospital=${row.name}')">查看网址</a>`;//&loginHospitalName=${row.name}
 						
                     } 
 					
