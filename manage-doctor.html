@@ -43,6 +43,7 @@
 
             $('#datagrid').datagrid({
             columns: [[
+                { field: 'phone', title: '手机', width: 200, align: 'left', halign: 'center' },
                 {
                     field: 'cover', title: '封面', width: 60, align: 'center', halign: 'center', formatter: function (value, row, index) {
                         return value ? `<span class="image-previewer"><img src='${value}' style='width:50px;cursor:pointer;' data-original='${value}'/></span>` : value
